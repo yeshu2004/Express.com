@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const [email,setEmail] = useState(null)
   const [password,setPassword] = useState(null)
+  const Navigate = useNavigate()
 
   const Login = async (e) => {
     e.preventDefault()
-    await fetch('http://localhost:3000/',{
+    const response = await fetch('http://localhost:3000/login',{
       method: 'POST',
       body: JSON.stringify({email,password}),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',// cookie will be excepted
     })
-    console.log(email,password)
+    if(response.status === 200) {
+      alert("Login successful")
+      Navigate('/')
+    }
+    else {
+      alert("Login failed")
+    }
   }
 
   return (
